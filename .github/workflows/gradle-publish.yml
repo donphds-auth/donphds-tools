@@ -28,10 +28,16 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
         with:
-          arguments: build -x test
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+        # 给 gradlew 文件授权
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
       - name: Decode PGP
         run: |
