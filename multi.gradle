@@ -82,6 +82,10 @@ subprojects { Project project ->
         from javadoc
         classifier = 'javadoc'
     }
+
+    ext {
+        isReleasedVersion = !project.parent.version.toString().endsWith("-alpha")
+    }
     publishing {
         // 定义发布什么
         publications {
@@ -96,13 +100,11 @@ subprojects { Project project ->
                 pom {
                     name = "${project.name}"
                     url = 'https://github.com/donphds/donphds-tools.git'
-
                     scm {
                         connection = 'scm:git:git://github.com/donphds/donphds-tools.git'
                         developerConnection = 'scm:git:ssh://github.com/donphds/donphds-tools.git'
                         url = 'https://github.com/donphds/donphds-tools.git'
                     }
-
                     licenses {
                         license {
                             name = 'The Apache License, Version 2.0'
@@ -122,10 +124,15 @@ subprojects { Project project ->
         }
         repositories {
             maven {
-                url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
                 credentials {
-                    username = System.getenv("sonatypeUsername")
-                    password = System.getenv("sonatypePassword")
+                    username findProperty("OSSRH_USER") ?: System.getenv("OSSRH_USER")
+                    password findProperty("OSSRH_PASSWD") ?: System.getenv("OSSRH_PASSWD")
+                }
+
+                if (!isReleasedVersion) {
+                    url "https://oss.sonatype.org/content/repositories/snapshots"
+                } else {
+                    url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
                 }
             }
         }
