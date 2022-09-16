@@ -4,16 +4,6 @@ import cn.hutool.core.util.ByteUtil;
 import com.donphds.ma.crypto.excpetion.CryptoException;
 import com.donphds.ma.crypto.secret.KeyManager;
 import com.donphds.ma.crypto.vo.SecretKey;
-import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
@@ -21,6 +11,15 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
 @UtilityClass
@@ -39,14 +38,14 @@ public class CryptUtil {
 
   public static String encryptToString(String data) {
     return StringUtils.isBlank(data)
-      ? data
-      : Base64.getEncoder().encodeToString(encrypt(data.getBytes(StandardCharsets.UTF_8)));
+        ? data
+        : Base64.getEncoder().encodeToString(encrypt(data.getBytes(StandardCharsets.UTF_8)));
   }
 
   public static String decryptToString(String cipher) {
     return StringUtils.isBlank(cipher)
-      ? cipher
-      : new String(decrypt(Base64.getDecoder().decode(cipher)), StandardCharsets.UTF_8);
+        ? cipher
+        : new String(decrypt(Base64.getDecoder().decode(cipher)), StandardCharsets.UTF_8);
   }
 
   private static byte[] decrypt(byte[] cipher) {
@@ -67,14 +66,14 @@ public class CryptUtil {
     System.arraycopy(cipher, VERSION_LEN, iv, 0, IV_LEN);
     System.arraycopy(cipher, VERSION_LEN + IV_LEN, ciphertext, 0, cipherLen);
     return process(
-      ciphertext, Base64.getDecoder().decode(key.getAseKey()), iv, Cipher.DECRYPT_MODE);
+        ciphertext, Base64.getDecoder().decode(key.getAseKey()), iv, Cipher.DECRYPT_MODE);
   }
 
   private static byte[] encrypt(byte[] plaintext) {
     SecretKey key = keyManager.getLatestKey();
     byte[] iv = generateIV();
     byte[] cipherText =
-      process(plaintext, Base64.getDecoder().decode(key.getAseKey()), iv, Cipher.ENCRYPT_MODE);
+        process(plaintext, Base64.getDecoder().decode(key.getAseKey()), iv, Cipher.ENCRYPT_MODE);
     return assemble(cipherText, iv, key.getVersion());
   }
 
@@ -101,11 +100,11 @@ public class CryptUtil {
       cipher.init(mode, secretKeySpec, new IvParameterSpec(iv));
       return cipher.doFinal(plaintext);
     } catch (NoSuchAlgorithmException
-             | NoSuchPaddingException
-             | InvalidKeyException
-             | IllegalBlockSizeException
-             | BadPaddingException
-             | InvalidAlgorithmParameterException e) {
+        | NoSuchPaddingException
+        | InvalidKeyException
+        | IllegalBlockSizeException
+        | BadPaddingException
+        | InvalidAlgorithmParameterException e) {
       throw new CryptoException(e);
     }
   }

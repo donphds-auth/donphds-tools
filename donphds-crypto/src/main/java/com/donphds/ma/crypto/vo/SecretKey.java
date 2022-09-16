@@ -15,5 +15,4 @@ public class SecretKey {
   private String aseKey;
 
   private int version;
-
 }

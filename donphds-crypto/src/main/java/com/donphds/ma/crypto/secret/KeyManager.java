@@ -5,11 +5,6 @@ import com.donphds.ma.crypto.utils.CryptUtil;
 import com.donphds.ma.crypto.vo.SecretKey;
 import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.stereotype.Component;
-
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +13,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -29,8 +28,8 @@ public class KeyManager implements ApplicationListener<ContextRefreshedEvent> {
 
   static {
     DEFAULT_KET =
-      new SecretKey(
-        "default key", Base64.getEncoder().encodeToString(KeyProvider.DEFAULT_AES_KEY), 0);
+        new SecretKey(
+            "default key", Base64.getEncoder().encodeToString(KeyProvider.DEFAULT_AES_KEY), 0);
   }
 
   private final ConcurrentHashMap<Integer, SecretKey> keyMap = new ConcurrentHashMap<>();
@@ -39,19 +38,19 @@ public class KeyManager implements ApplicationListener<ContextRefreshedEvent> {
 
   public KeyManager(KeyProvider provider) {
     cache =
-      Caffeine.newBuilder()
-        .maximumSize(1000L)
-        .expireAfterWrite(65, TimeUnit.MINUTES)
-        .refreshAfterWrite(30, TimeUnit.MINUTES)
-        .executor(
-          new ThreadPoolExecutor(
-            3,
-            4,
-            1,
-            TimeUnit.MINUTES,
-            new ArrayBlockingQueue<>(1000),
-            r -> new Thread(r, String.format("secret coffeine thread %s", COUNT.get()))))
-        .buildAsync((key, e) -> provider.getSecretKey());
+        Caffeine.newBuilder()
+            .maximumSize(1000L)
+            .expireAfterWrite(65, TimeUnit.MINUTES)
+            .refreshAfterWrite(30, TimeUnit.MINUTES)
+            .executor(
+                new ThreadPoolExecutor(
+                    3,
+                    4,
+                    1,
+                    TimeUnit.MINUTES,
+                    new ArrayBlockingQueue<>(1000),
+                    r -> new Thread(r, String.format("secret coffeine thread %s", COUNT.get()))))
+            .buildAsync((key, e) -> provider.getSecretKey());
     this.keyMap.put(0, DEFAULT_KET);
   }
 
@@ -79,15 +78,15 @@ public class KeyManager implements ApplicationListener<ContextRefreshedEvent> {
 
   public void load() {
     this.cache
-      .get(CACHE_SECRET_KET)
-      .whenComplete(
-        ((keys, e) -> {
-          if (e == null) {
-            for (SecretKey key : keys) {
-              this.keyMap.put(key.getVersion(), key);
-              this.version = Math.max(key.getVersion(), this.version);
-            }
-          }
-        }));
+        .get(CACHE_SECRET_KET)
+        .whenComplete(
+            ((keys, e) -> {
+              if (e == null) {
+                for (SecretKey key : keys) {
+                  this.keyMap.put(key.getVersion(), key);
+                  this.version = Math.max(key.getVersion(), this.version);
+                }
+              }
+            }));
   }
 }
