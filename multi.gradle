@@ -42,14 +42,14 @@ subprojects { Project project ->
     apply plugin: "java-library"
     apply plugin: "maven-publish"
     apply plugin: "com.diffplug.spotless"
-    apply plugin: 'signing'
+    apply plugin: "signing"
 
     sourceCompatibility = 11
     targetCompatibility = 11
 
     spotless {
         java {
-            googleJavaFormat('1.8').aosp().reflowLongStrings().groupArtifact('com.google.googlejavaformat:google-java-format')
+            googleJavaFormat("1.8").aosp().reflowLongStrings().groupArtifact("com.google.googlejavaformat:google-java-format")
         }
     }
 
@@ -71,51 +71,50 @@ subprojects { Project project ->
     test {
         useJUnitPlatform()
     }
-    println "start ${project.getParent().version}"
     group = "com.donphds.${project.name}"
     task sourcesJar(type: Jar) {
         from sourceSets.main.allJava
-        classifier = 'sources'
+        classifier = "sources"
     }
 
     task javadocJar(type: Jar) {
         from javadoc
-        classifier = 'javadoc'
+        classifier = "javadoc"
     }
 
     ext {
         isReleasedVersion = !project.parent.version.toString().endsWith("-alpha")
+        gitRespositoryName = project.getParent().name
     }
     publishing {
         // 定义发布什么
         publications {
             mavenJava(MavenPublication) {
-                 groupId = "io.github.donphds"
-                // version = project.version
-                // groupId,artifactId,version，如果不定义，则会按照以上默认值执行
+                groupId = "io.github.donphds"
+                version = project.getParent().version
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
                 pom {
                     name = "${project.name}"
-                    url = 'https://github.com/donphds/donphds-tools.git'
+                    url = "https://github.com/donphds/${gitRespositoryName}.git"
                     scm {
-                        connection = 'scm:git:git://github.com/donphds/donphds-tools.git'
-                        developerConnection = 'scm:git:ssh://github.com/donphds/donphds-tools.git'
-                        url = 'https://github.com/donphds/donphds-tools.git'
+                        connection = "scm:git:git://github.com/donphds/${gitRespositoryName}.git"
+                        developerConnection = "scm:git:ssh://github.com/donphds/${gitRespositoryName}.git"
+                        url = "https://github.com/donphds/${gitRespositoryName}.git"
                     }
                     licenses {
                         license {
-                            name = 'The Apache License, Version 2.0'
-                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            name = "The Apache License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
                         }
                     }
 
                     developers {
                         developer {
-                            id = 'donphds'
-                            name = 'donphds'
-                            email = 'donphds@gmail.com'
+                            id = "donphds"
+                            name = "donphds"
+                            email = "donphds@gmail.com"
                         }
                     }
                 }
@@ -128,9 +127,9 @@ subprojects { Project project ->
                     password findProperty("OSSRH_PASSWD") ?: System.getenv("OSSRH_PASSWD")
                 }
                 if (!isReleasedVersion) {
-                    url "https://oss.sonatype.org/content/repositories/snapshots"
+                    url "https://s01.oss.sonatype.org/content/repositories/snapshots"
                 } else {
-                    url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+                    url "https:///s01.oss.sonatype.org/service/local/staging/deploy/maven2"
                 }
             }
         }
