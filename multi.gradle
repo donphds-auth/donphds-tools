@@ -1,0 +1,112 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://maven.aliyun.com/repository/public/"
+        }
+        maven {
+            url "https://maven.aliyun.com/repository/central"
+        }
+        mavenCentral()
+    }
+}
+
+
+allprojects {
+    repositories {
+        maven {
+            url "https://maven.aliyun.com/repository/public/"
+        }
+        maven {
+            url "https://maven.aliyun.com/repository/central"
+        }
+        mavenCentral()
+    }
+}
+
+ext {
+    lang3Version = "3.12.0"
+    slf4jVersion = "1.7.36"
+    caffeineVersion = "3.0.3"
+    springBootVersion = "2.7.1"
+    springCloudVersion = "2021.0.1"
+    alibabaCloudVersion = "2021.0.1.0"
+    huToolVersion = "5.8.4"
+    swaggerVersion = "3.0.0"
+    mockitoVersion = "3.12.4"
+    junitBomVersion = "5.8.2"
+    jacksonVersion = "2.13.3"
+    guavaVersion = "31.1-jre"
+    lombokVersion = "1.18.24"
+}
+subprojects {
+    apply plugin: "java-library"
+    apply plugin: "maven-publish"
+    apply plugin: "com.diffplug.spotless"
+
+    sourceCompatibility = 8
+    targetCompatibility = 8
+
+    spotless {
+        java {
+            googleJavaFormat("1.15.1").groupArtifact("io.opil:google-java-format")
+        }
+    }
+
+
+    dependencies {
+        implementation("org.apache.commons:commons-lang3:${lang3Version}")
+        implementation "com.google.guava:guava:${guavaVersion}"
+        implementation "cn.hutool:hutool-core:${huToolVersion}"
+        implementation "cn.hutool:hutool-extra:${huToolVersion}"
+
+
+        implementation("org.slf4j:slf4j-api:${slf4jVersion}")
+        testImplementation(platform("org.junit:junit-bom:${junitBomVersion}"))
+        testImplementation("org.junit.jupiter:junit-jupiter")
+        testImplementation("org.mockito:mockito-core:${mockitoVersion}")
+        testImplementation("org.mockito:mockito-inline:${mockitoVersion}")
+        testImplementation("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    group = "com.donphds.ma"
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = "https://maven.pkg.github.com/donphds/donphds-tools"
+                credentials {
+                    username = System.getenv("USERNAME")
+                    password = System.getenv("TOKEN")
+                }
+            }
+        }
+        publications {
+            gpr(MavenPublication) {
+                groupId = "com.donphds.ma"
+                artifactId = "configuration"
+                version = "0.0.1"
+                versionMapping {
+                    usage("java-api") {
+                        fromResolutionOf("runtimeClasspath")
+                    }
+                    usage("java-runtime") {
+                        fromResolutionResult()
+                    }
+                }
+                from(components.java)
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+

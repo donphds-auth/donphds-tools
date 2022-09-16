@@ -1,0 +1,4 @@
+rootProject.name = 'donphds-tools'
+
+include "donphds-crypto"
+include "donphds-configuration"
