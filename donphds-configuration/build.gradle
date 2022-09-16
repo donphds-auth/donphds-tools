@@ -8,4 +8,6 @@ dependencies {
     api "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
     api "org.springframework.boot:spring-boot-autoconfigure:2.7.3"
+    implementation 'org.springframework.boot:spring-boot-starter-webflux:2.7.3'
+
 }
