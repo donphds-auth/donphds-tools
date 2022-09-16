@@ -1,4 +1,4 @@
-package com.donphds.ma.crypto.vo;
+package com.donphds.crypto.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    com.donphds.ma.common.config.SerializerConfig
+    com.donphds.ma.common.config.KeyAutoConfiguration

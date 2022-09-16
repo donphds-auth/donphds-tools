@@ -1,7 +1,7 @@
-package com.donphds.ma.crypto.config;
+package com.donphds.crypto.config;
 
-import com.donphds.ma.crypto.secret.KeyManager;
-import com.donphds.ma.crypto.secret.KeyProvider;
+import com.donphds.crypto.secret.KeyManager;
+import com.donphds.crypto.secret.KeyProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

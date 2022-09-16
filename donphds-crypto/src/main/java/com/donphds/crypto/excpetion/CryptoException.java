@@ -1,4 +1,4 @@
-package com.donphds.ma.crypto.excpetion;
+package com.donphds.crypto.excpetion;
 
 public class CryptoException extends RuntimeException {
     public CryptoException(String msg) {

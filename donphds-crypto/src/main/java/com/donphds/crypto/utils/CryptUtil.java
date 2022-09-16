@@ -1,9 +1,9 @@
-package com.donphds.ma.crypto.utils;
+package com.donphds.crypto.utils;
 
 import cn.hutool.core.util.ByteUtil;
-import com.donphds.ma.crypto.excpetion.CryptoException;
-import com.donphds.ma.crypto.secret.KeyManager;
-import com.donphds.ma.crypto.vo.SecretKey;
+import com.donphds.crypto.excpetion.CryptoException;
+import com.donphds.crypto.secret.KeyManager;
+import com.donphds.crypto.vo.SecretKey;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;

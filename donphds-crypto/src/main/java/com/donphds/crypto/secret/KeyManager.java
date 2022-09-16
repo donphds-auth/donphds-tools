@@ -1,8 +1,8 @@
-package com.donphds.ma.crypto.secret;
+package com.donphds.crypto.secret;
 
-import com.donphds.ma.crypto.excpetion.CryptoException;
-import com.donphds.ma.crypto.utils.CryptUtil;
-import com.donphds.ma.crypto.vo.SecretKey;
+import com.donphds.crypto.excpetion.CryptoException;
+import com.donphds.crypto.utils.CryptUtil;
+import com.donphds.crypto.vo.SecretKey;
 import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import java.util.Base64;

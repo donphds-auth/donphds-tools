@@ -38,10 +38,11 @@ ext {
     guavaVersion = "31.1-jre"
     lombokVersion = "1.18.24"
 }
-subprojects {
+subprojects { Project project ->
     apply plugin: "java-library"
     apply plugin: "maven-publish"
     apply plugin: "com.diffplug.spotless"
+    apply plugin: 'signing'
 
     sourceCompatibility = 11
     targetCompatibility = 11
@@ -51,7 +52,6 @@ subprojects {
             googleJavaFormat('1.8').aosp().reflowLongStrings().groupArtifact('com.google.googlejavaformat:google-java-format')
         }
     }
-
 
     dependencies {
         implementation("org.apache.commons:commons-lang3:${lang3Version}")
@@ -71,22 +71,76 @@ subprojects {
     test {
         useJUnitPlatform()
     }
+    println "start ${project.name}"
+    group = "com.donphds.${project.name}"
+    task sourcesJar(type: Jar) {
+        from sourceSets.main.allJava
+        classifier = 'sources'
+    }
 
-    group = "com.donphds.ma"
-
-
+    task javadocJar(type: Jar) {
+        from javadoc
+        classifier = 'javadoc'
+    }
     publishing {
+        // 定义发布什么
+        publications {
+            mavenJava(MavenPublication) {
+                // groupId = project.group
+                // artifactId = project.name
+                // version = project.version
+                // groupId,artifactId,version，如果不定义，则会按照以上默认值执行
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+                pom {
+                    name = "${project.name}"
+                    url = 'https://github.com/donphds/donphds-tools.git'
+
+                    scm {
+                        connection = 'scm:git:git://github.com/donphds/donphds-tools.git'
+                        developerConnection = 'scm:git:ssh://github.com/donphds/donphds-tools.git'
+                        url = 'https://github.com/donphds/donphds-tools.git'
+                    }
+
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'donphds'
+                            name = 'donphds'
+                            email = 'donphds@gmail.com'
+                        }
+                    }
+                }
+            }
+        }
         repositories {
             maven {
-                name = "OSSRH"
-                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
                 credentials {
-                    username = System.getenv("MAVEN_USERNAME")
-                    password = System.getenv("MAVEN_PASSWORD")
+                    username = System.getenv("sonatypeUsername")
+                    password = System.getenv("sonatypePassword")
                 }
             }
         }
     }
+    signing {
+        sign publishing.publications.mavenJava
+    }
+
+
+    javadoc {
+        // <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        // 防止本地打开中文乱码
+        options.addStringOption("charset", "UTF-8")
+    }
+
 }
 
 

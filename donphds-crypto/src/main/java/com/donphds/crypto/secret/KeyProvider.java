@@ -1,7 +1,7 @@
-package com.donphds.ma.crypto.secret;
+package com.donphds.crypto.secret;
 
-import com.donphds.ma.crypto.excpetion.CryptoException;
-import com.donphds.ma.crypto.vo.SecretKey;
+import com.donphds.crypto.excpetion.CryptoException;
+import com.donphds.crypto.vo.SecretKey;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package com.donphds.ma.configuration.config;
+package com.donphds.configuration;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
