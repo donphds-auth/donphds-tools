@@ -4,3 +4,6 @@ plugins {
 
 }
 apply from: "./multi.gradle"
+
+
+project.version = "0.0.1"
