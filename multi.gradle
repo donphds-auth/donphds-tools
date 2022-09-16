@@ -98,6 +98,7 @@ subprojects { Project project ->
                 pom {
                     name = "${project.name}"
                     url = "https://github.com/donphds/${gitRespositoryName}.git"
+                    description = "${project.name}"
                     scm {
                         connection = "scm:git:git://github.com/donphds/${gitRespositoryName}.git"
                         developerConnection = "scm:git:ssh://github.com/donphds/${gitRespositoryName}.git"
