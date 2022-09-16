@@ -27,40 +27,41 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class SerializerConfig {
 
-  @Bean
-  @Primary
-  @ConditionalOnMissingBean(ObjectMapper.class)
-  public ObjectMapper om() {
-    JsonMapper.Builder builder = JsonMapper.builder();
-    // 属性为 null 不进行序列化，默认序列化全部
-    builder.serializationInclusion(JsonInclude.Include.NON_EMPTY);
-    // 未知属性也不进行序列化
-    builder.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    // 未转义字符也可以序列化
-    builder.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS, true);
-    // 单引号 + \ 的嵌套也可以序列化
-    builder.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-    JsonMapper jacksonMapper = builder.build();
-    JavaTimeModule javaTimeModule = new JavaTimeModule();
-    javaTimeModule.addSerializer(
-        BigDecimal.class,
-        new JsonSerializer<BigDecimal>() {
-          @Override
-          public void serialize(BigDecimal value, JsonGenerator gen, SerializerProvider serializers)
-              throws IOException {
-            DecimalFormat decimalFormat = new DecimalFormat("#.##");
-            gen.writeString(decimalFormat.format(value));
-          }
-        });
-    jacksonMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-    javaTimeModule.addSerializer(
-        LocalDateTime.class,
-        new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-    javaTimeModule.addDeserializer(
-        LocalDateTime.class,
-        new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-    jacksonMapper.registerModule(javaTimeModule);
-    jacksonMapper.setPropertyNamingStrategy(new PropertyNamingStrategies.SnakeCaseStrategy());
-    return jacksonMapper;
-  }
+    @Bean
+    @Primary
+    @ConditionalOnMissingBean(ObjectMapper.class)
+    public ObjectMapper om() {
+        JsonMapper.Builder builder = JsonMapper.builder();
+        // 属性为 null 不进行序列化，默认序列化全部
+        builder.serializationInclusion(JsonInclude.Include.NON_EMPTY);
+        // 未知属性也不进行序列化
+        builder.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // 未转义字符也可以序列化
+        builder.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS, true);
+        // 单引号 + \ 的嵌套也可以序列化
+        builder.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        JsonMapper jacksonMapper = builder.build();
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        javaTimeModule.addSerializer(
+                BigDecimal.class,
+                new JsonSerializer<BigDecimal>() {
+                    @Override
+                    public void serialize(
+                            BigDecimal value, JsonGenerator gen, SerializerProvider serializers)
+                            throws IOException {
+                        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                        gen.writeString(decimalFormat.format(value));
+                    }
+                });
+        jacksonMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        javaTimeModule.addSerializer(
+                LocalDateTime.class,
+                new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        javaTimeModule.addDeserializer(
+                LocalDateTime.class,
+                new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        jacksonMapper.registerModule(javaTimeModule);
+        jacksonMapper.setPropertyNamingStrategy(new PropertyNamingStrategies.SnakeCaseStrategy());
+        return jacksonMapper;
+    }
 }

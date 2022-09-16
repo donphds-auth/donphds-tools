@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CryptoAutoConfiguration {
 
-  @Bean
-  public KeyManager keyManager(KeyProvider keyProvider) {
-    return new KeyManager(keyProvider);
-  }
+    @Bean
+    public KeyManager keyManager(KeyProvider keyProvider) {
+        return new KeyManager(keyProvider);
+    }
 
-  @Bean
-  public KeyProvider keyProvider() {
-    return new KeyProvider();
-  }
+    @Bean
+    public KeyProvider keyProvider() {
+        return new KeyProvider();
+    }
 }

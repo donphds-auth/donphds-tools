@@ -31,33 +31,34 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class DonphdsMaAuthApplicationTests {
 
-  @Autowired AlipayProperties alipayProperties;
-  @Autowired ObjectMapper om;
+    @Autowired AlipayProperties alipayProperties;
+    @Autowired ObjectMapper om;
 
-  @Test
-  void contextLoads() {}
+    @Test
+    void contextLoads() {}
 
-  @Test
-  void testSign()
-      throws JsonProcessingException, NoSuchAlgorithmException, InvalidKeySpecException,
-          InvalidKeyException, SignatureException {
-    Map<String, String> params = new TreeMap<>(StringUtils::compare);
-    params.put(APP_ID, alipayProperties.getAppId());
-    Map<String, String> bizParams = new TreeMap<>(StringUtils::compare);
-    bizParams.put(GRANT_TYPE, GRATE_TYPE_CODE);
-    bizParams.put(CODE, alipayProperties.getAppId());
-    params.put(BIZ_CONTENT, om.writeValueAsString(bizParams));
-    params.put(METHOD, METHOD_VAL);
-    params.put(CHARSET, alipayProperties.getCharset());
-    params.put(SIGN_TYPE, alipayProperties.getSignType());
-    params.put(TIMESTAMP, "2022-06-16 10:58:53");
-    params.put(VERSION, alipayProperties.getVersion());
-    StringJoiner sj = new StringJoiner("&");
-    params.forEach((k, v) -> {
-          sj.add(k + "=" + v);
-        });
-    String content = sj.toString();
-    String s = CommonUtils.RSA2048Sign(content, alipayProperties.getAppPrivateKey());
-    System.out.println(s);
-  }
+    @Test
+    void testSign()
+            throws JsonProcessingException, NoSuchAlgorithmException, InvalidKeySpecException,
+                    InvalidKeyException, SignatureException {
+        Map<String, String> params = new TreeMap<>(StringUtils::compare);
+        params.put(APP_ID, alipayProperties.getAppId());
+        Map<String, String> bizParams = new TreeMap<>(StringUtils::compare);
+        bizParams.put(GRANT_TYPE, GRATE_TYPE_CODE);
+        bizParams.put(CODE, alipayProperties.getAppId());
+        params.put(BIZ_CONTENT, om.writeValueAsString(bizParams));
+        params.put(METHOD, METHOD_VAL);
+        params.put(CHARSET, alipayProperties.getCharset());
+        params.put(SIGN_TYPE, alipayProperties.getSignType());
+        params.put(TIMESTAMP, "2022-06-16 10:58:53");
+        params.put(VERSION, alipayProperties.getVersion());
+        StringJoiner sj = new StringJoiner("&");
+        params.forEach(
+                (k, v) -> {
+                    sj.add(k + "=" + v);
+                });
+        String content = sj.toString();
+        String s = CommonUtils.RSA2048Sign(content, alipayProperties.getAppPrivateKey());
+        System.out.println(s);
+    }
 }
