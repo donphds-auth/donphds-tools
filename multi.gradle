@@ -90,8 +90,7 @@ subprojects { Project project ->
         // 定义发布什么
         publications {
             mavenJava(MavenPublication) {
-                // groupId = project.group
-                // artifactId = project.name
+                 groupId = "io.github.donphds"
                 // version = project.version
                 // groupId,artifactId,version，如果不定义，则会按照以上默认值执行
                 from components.java
@@ -128,7 +127,6 @@ subprojects { Project project ->
                     username findProperty("OSSRH_USER") ?: System.getenv("OSSRH_USER")
                     password findProperty("OSSRH_PASSWD") ?: System.getenv("OSSRH_PASSWD")
                 }
-
                 if (!isReleasedVersion) {
                     url "https://oss.sonatype.org/content/repositories/snapshots"
                 } else {
