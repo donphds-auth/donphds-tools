@@ -5,6 +5,6 @@ plugins {
 }
 version  "0.0.1"
 
-apply from: "https://raw.githubusercontent.com/donphds/build/master/github/multi.gradle"
+apply from: "https://raw.githubusercontent.com/donphds/build/master/gradle/multi.gradle"
 
 
