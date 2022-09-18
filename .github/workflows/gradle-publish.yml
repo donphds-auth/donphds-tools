@@ -7,3 +7,10 @@ on:
 jobs:
   something:
     uses: donphds/build/.github/workflows/gradle-publish.yml@master
+    secrets:
+      OSSRH_USER: ${{ secrets.OSSRH_USER }}
+      OSSRH_PASSWD: ${{ secrets.OSSRH_PASSWD }}
+      SECRET_KET_ID: ${{secrets.SECRET_KET_ID}}
+      SECRET_KET_PASSWD: ${{secrets.SECRET_KET_PASSWD}}
+      SECRET_KET_RING_FILE_BASE64: ${{secrets.SECRET_KET_RING_FILE_BASE64}}
+
