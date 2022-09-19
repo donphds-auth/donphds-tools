@@ -39,9 +39,9 @@ jobs:
   publish:
     needs: [ build ]
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     steps:
       - name: publish to maven central
-        if: github.event.pull_request.merged == true
         run: |
           echo "github.event.pull_request.merged           : $MERGED_RAW"
           echo "github.event.pull_request.merged == 'true' : $MERGED_TRUE_STR"
