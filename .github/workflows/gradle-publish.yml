@@ -5,8 +5,8 @@ on:
     branches:
       - master
 jobs:
-  something:
-    uses: donphds/build/.github/workflows/gradle-publish.yml@master
+  project:
+    uses: donphds-auth/build/.github/workflows/gradle-publish.yml@master
     secrets:
       OSSRH_USER: ${{ secrets.OSSRH_USER }}
       OSSRH_PASSWD: ${{ secrets.OSSRH_PASSWD }}
