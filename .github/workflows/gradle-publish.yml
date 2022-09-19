@@ -2,7 +2,9 @@ name: DonPhds Gradle Package Release
 
 on:
   push:
-
+  pull_request_target:
+    types:
+      - closed
 #jobs:
 #  project:
 #    uses: donphds-auth/build/.github/workflows/gradle-publish.yml@master
