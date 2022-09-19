@@ -46,6 +46,9 @@ jobs:
 #          base64 -d ~/.gradle/secret.gpg.b64 > ~/.gradle/secret.gpg
 #          ./gradlew publish -Psigning.keyId=${{ secrets.SECRET_KET_ID }} -Psigning.password=${{ secrets.SECRET_KET_PASSWD }} -Psigning.secretKeyRingFile=$(echo ~/.gradle/secret.gpg)
         env:
-          OSSRH_USER: ${{ secrets.OSSRH_USER }}
-          OSSRH_PASSWD: ${{ secrets.OSSRH_PASSWD }}
+#          OSSRH_USER: ${{ secrets.OSSRH_USER }}
+#          OSSRH_PASSWD: ${{ secrets.OSSRH_PASSWD }}
+          MERGED_RAW: ${{ github.event.pull_request.merged }}
+          MERGED_TRUE_STR: ${{ github.event.pull_request.merged == 'true' }}
+          MERGED_TRUE_BOOL: ${{ github.event.pull_request.merged == true }}
 
