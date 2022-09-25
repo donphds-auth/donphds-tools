@@ -1,4 +1,4 @@
-package com.donphds.core;
+package com.donphds.core.jwt;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
