@@ -5,4 +5,4 @@ plugins {
 }
 version  "0.0.1"
 
-apply from: "https://raw.githubusercontent.com/donphds-auth/build/master/gradle/multi.gradle"
+apply from: "https://cdn.jsdelivr.net/gh/donphds-auth/build@master/gradle/multi.gradle"
