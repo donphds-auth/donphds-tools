@@ -4,11 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -32,13 +28,9 @@ public class SerializerConfig {
     @ConditionalOnMissingBean(ObjectMapper.class)
     public ObjectMapper om() {
         JsonMapper.Builder builder = JsonMapper.builder();
-        // 属性为 null 不进行序列化，默认序列化全部
         builder.serializationInclusion(JsonInclude.Include.NON_EMPTY);
-        // 未知属性也不进行序列化
         builder.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        // 未转义字符也可以序列化
         builder.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS, true);
-        // 单引号 + \ 的嵌套也可以序列化
         builder.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
         JsonMapper jacksonMapper = builder.build();
         JavaTimeModule javaTimeModule = new JavaTimeModule();

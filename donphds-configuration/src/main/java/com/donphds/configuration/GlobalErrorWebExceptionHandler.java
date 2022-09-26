@@ -54,10 +54,10 @@ public class GlobalErrorWebExceptionHandler implements ErrorWebExceptionHandler 
                 response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
                 dataBuffer =
                         bufferFactory.wrap(
-                                om.writeValueAsBytes(Maps.immutableEntry("msg", "未知的异常")));
+                                om.writeValueAsBytes(Maps.immutableEntry("msg", "未知异常")));
             }
         } catch (JsonProcessingException e) {
-            log.error("全局异常消息序列化失败: ", e);
+            log.error("全局异常消息序列化失: ", e);
             dataBuffer = bufferFactory.wrap("".getBytes());
         }
         log.error("Exception Stack: ", ex);

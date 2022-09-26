@@ -92,7 +92,6 @@ public class CryptUtil {
     }
 
     public static byte[] generateIV() {
-        // 生成初始化向量
         byte[] bytes = new byte[IV_LEN];
         secureRandom.nextBytes(bytes);
         return bytes;
